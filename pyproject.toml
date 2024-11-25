@@ -1,0 +1,19 @@
+[project]
+name = "youtubeMEmes"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "ChurroC", email = "charanvenkatchandran@gmail.com"},
+]
+
+dependencies = ["praw>=7.8.1", "requests>=2.32.3", "ffmpeg-python>=0.2.0", "opencv-python>=4.10.0.84", "numpy>=2.1.3"]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
+
+[tool.pdm.scripts]
+start = {cmd = "python main.py", working_dir = "./src"}
