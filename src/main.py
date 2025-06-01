@@ -3,6 +3,7 @@ import requests
 import os
 import shutil
 import cv2
+from moviepy import *
 
 reddit = praw.Reddit(
     client_id="BQ-csvDK715FdbrHV9TPbQ",
@@ -10,9 +11,11 @@ reddit = praw.Reddit(
     user_agent="YoutubeMemes 0.1.0 by /u/Charan__C github.com/ChurroC/Meme-Youtube",
 )
 
-file_base = "./images"
-if os.path.exists(file_base):
-    shutil.rmtree(file_base)
+image_folder = "./images"
+image_duration = 7
+
+if os.path.exists(image_folder):
+    shutil.rmtree(image_folder)
 
 # 180(total short time)/7(for each video length) = 25(rounded down)
 # but also consider that some are videos and not images
@@ -31,49 +34,67 @@ for index, submission in enumerate(
             + "."
             + submission.url.split(".")[-1]
         )
-        if not os.path.exists(file_base):
-            os.makedirs(file_base)
-        with open(os.path.join(file_base, file_name), "wb") as handler:
+        if not os.path.exists(image_folder):
+            os.makedirs(image_folder)
+        with open(os.path.join(image_folder, file_name), "wb") as handler:
             handler.write(img_data)
             if "png" in file_name:
-                image = cv2.imread(os.path.join(file_base, file_name))
+                image = cv2.imread(os.path.join(image_folder, file_name))
                 cv2.imwrite(
                     os.path.join(
-                        file_base, "".join(file_name.split(".")[0:-1]) + ".jpeg"
+                        image_folder, "".join(file_name.split(".")[0:-1]) + ".jpeg"
                     ),
                     image,
                     [int(cv2.IMWRITE_JPEG_QUALITY), 100],
                 )
-                os.remove(os.path.join(file_base, file_name))
+                os.remove(os.path.join(image_folder, file_name))
 
-import ffmpeg
+image_files = sorted(
+    [
+        os.path.join(image_folder, fname)
+        for fname in os.listdir(image_folder)
+        if fname.lower().endswith((".png", ".jpg", ".jpeg"))
+    ]
+)
+
+clips = [
+    VideoClip([ImageClip(img).with_duration(image_duration)]).crossfadein(1)
+    for img in image_files
+]
+
+# Concatenate with crossfade
+fade_duration = 1  # seconds
+video = concatenate_videoclips(clips, method="compose", padding=-fade_duration)
+video.write_videofile("output_with_transitions.mp4", fps=24)
+
+# import ffmpeg
 
 # (
 #     ffmpeg.input("./*.jpeg", pattern_type="glob", framerate=1)
 #     .filter("deflicker", mode="pm", size=10)
-#     .filter("scale", size="hd1080", force_original_aspect_ratio="increase")
-#     .output(
-#         "movie.mp4", crf=20, preset="slower", movflags="faststart", pix_fmt="yuv420p"
-#     )
-#     .run()
-# )
-output_name = "movie.mp4"
-if os.path.exists(output_name):
-    os.remove(output_name)
+# #     .filter("scale", size="hd1080", force_original_aspect_ratio="increase")
+# #     .output(
+# #         "movie.mp4", crf=20, preset="slower", movflags="faststart", pix_fmt="yuv420p"
+# #     )
+# #     .run()
+# # )
+# output_name = "movie.mp4"
+# if os.path.exists(output_name):
+#     os.remove(output_name)
+# # (
+# #     ffmpeg.input(
+# #         "./images/*.jpeg", pattern_type="glob", framerate=1 / 7
+# #     )  # each frame is 7 seconds
+# #     .filter("scale", "trunc(iw/2)*2", "trunc(ih/2)*2")
+# #     .output(output_name)
+# #     .run()
+# # )
 # (
 #     ffmpeg.input(
 #         "./images/*.jpeg", pattern_type="glob", framerate=1 / 7
 #     )  # each frame is 7 seconds
-#     .filter("scale", "trunc(iw/2)*2", "trunc(ih/2)*2")
+#     .filter("scale", "1080", "1920")
+#     .filter("pad", "1080", "1920", "(ow-iw)/2", "(oh-ih)/2")
 #     .output(output_name)
 #     .run()
 # )
-(
-    ffmpeg.input(
-        "./images/*.jpeg", pattern_type="glob", framerate=1 / 7
-    )  # each frame is 7 seconds
-    .filter("scale", "1080", "1920")
-    .filter("pad", "1080", "1920", "(ow-iw)/2", "(oh-ih)/2")
-    .output(output_name)
-    .run()
-)
