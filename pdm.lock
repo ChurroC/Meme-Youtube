@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:e6273fca511e0fdfd04ad3c1d0382ebc2205f006e44be48267130e0e140eaf1b"
+content_hash = "sha256:516fefb5e062b9e7165b3d1b80a3b8848ac3981aa82f617c52bbec1746e14ce8"
 
 [[metadata.targets]]
 requires_python = "==3.12.*"
@@ -173,6 +173,21 @@ files = [
 ]
 
 [[package]]
+name = "google-auth-oauthlib"
+version = "1.2.2"
+requires_python = ">=3.6"
+summary = "Google Authentication Library"
+groups = ["default"]
+dependencies = [
+    "google-auth>=2.15.0",
+    "requests-oauthlib>=0.7.0",
+]
+files = [
+    {file = "google_auth_oauthlib-1.2.2-py3-none-any.whl", hash = "sha256:fd619506f4b3908b5df17b65f39ca8d66ea56986e5472eb5978fd8f3786f00a2"},
+    {file = "google_auth_oauthlib-1.2.2.tar.gz", hash = "sha256:11046fb8d3348b296302dd939ace8af0a724042e8029c1b872d87fabc9f41684"},
+]
+
+[[package]]
 name = "googleapis-common-protos"
 version = "1.70.0"
 requires_python = ">=3.7"
@@ -297,6 +312,17 @@ dependencies = [
 files = [
     {file = "oauth2client-4.1.3-py2.py3-none-any.whl", hash = "sha256:b8a81cc5d60e2d364f0b1b98f958dbd472887acaf1a5b05e21c28c31a2d6d3ac"},
     {file = "oauth2client-4.1.3.tar.gz", hash = "sha256:d486741e451287f69568a4d26d70d9acd73a2bbfa275746c535b4209891cccc6"},
+]
+
+[[package]]
+name = "oauthlib"
+version = "3.3.1"
+requires_python = ">=3.8"
+summary = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
+groups = ["default"]
+files = [
+    {file = "oauthlib-3.3.1-py3-none-any.whl", hash = "sha256:88119c938d2b8fb88561af5f6ee0eec8cc8d552b7bb1f712743136eb7523b7a1"},
+    {file = "oauthlib-3.3.1.tar.gz", hash = "sha256:0f0f8aa759826a193cf66c12ea1af1637f87b9b4622d46e866952bb022e538c9"},
 ]
 
 [[package]]
@@ -526,6 +552,21 @@ dependencies = [
 files = [
     {file = "requests-2.32.3-py3-none-any.whl", hash = "sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6"},
     {file = "requests-2.32.3.tar.gz", hash = "sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"},
+]
+
+[[package]]
+name = "requests-oauthlib"
+version = "2.0.0"
+requires_python = ">=3.4"
+summary = "OAuthlib authentication support for Requests."
+groups = ["default"]
+dependencies = [
+    "oauthlib>=3.0.0",
+    "requests>=2.0.0",
+]
+files = [
+    {file = "requests-oauthlib-2.0.0.tar.gz", hash = "sha256:b3dffaebd884d8cd778494369603a9e7b58d29111bf6b41bdc2dcd87203af4e9"},
+    {file = "requests_oauthlib-2.0.0-py2.py3-none-any.whl", hash = "sha256:7dd8a5c40426b779b0868c404bdef9768deccf22749cde15852df527e6269b36"},
 ]
 
 [[package]]
